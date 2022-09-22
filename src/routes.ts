@@ -1,3 +1,4 @@
+import config from 'config';
 import { Express } from 'express';
 
 import {
@@ -9,11 +10,13 @@ import { jwtCheck } from './middleware/jwt-check';
 import { ValidateResource } from './middleware/validate-resource';
 import { UserSchema } from './schemas/user.schema';
 
-export const routes = (app: Express) => {
-  app.use(jwtCheck);
+const version = config.get<number>('version');
 
-  app.get('/api/athlete/:uid', getAthleteHandler);
-  app.get('/api/users/:uid', getUserHandler);
-  app.post('/api/users', ValidateResource(UserSchema), createUserHandler);
-  app.put('/api/users', ValidateResource(UserSchema), createUserHandler);
+export const routes = (app: Express) => {
+  app.get('/api/sambori', (req, res) => res.send(`Sambori! v.${version}`));
+
+  app.get('/api/athlete/:uid', jwtCheck, getAthleteHandler);
+  app.get('/api/users/:uid', jwtCheck, getUserHandler);
+  app.post('/api/users', jwtCheck, ValidateResource(UserSchema), createUserHandler);
+  app.put('/api/users', jwtCheck, ValidateResource(UserSchema), createUserHandler);
 };

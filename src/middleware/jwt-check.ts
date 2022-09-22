@@ -8,7 +8,7 @@ export const jwtCheck = jwt.expressjwt({
     rateLimit: true,
     jwksRequestsPerMinute: 5,
     jwksUri: `https://${auth0Config.auth0Domain}/.well-known/jwks.json`,
-  }),
+  }) as any,
   audience: auth0Config.auth0Audience,
   issuer: `https://${auth0Config.auth0Domain}/`,
   algorithms: ['RS256'],

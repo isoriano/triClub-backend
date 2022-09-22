@@ -9,7 +9,7 @@ export const mongoDbConnect = async () => {
   try {
     const dbPath = `mongodb+srv://${dbSettings.user}:${encodeURIComponent(
       dbSettings.password
-    )}@cluster0.89ia9.mongodb.net/?retryWrites=true&w=majority`;
+    )}@${dbSettings.clusterName}/?retryWrites=true&w=majority`;
 
     await mongoose.connect(dbPath);
     const db = mongoose.connection;

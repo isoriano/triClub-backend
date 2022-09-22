@@ -3,7 +3,7 @@ import { GetUser, GetAthlete } from '../services';
 import { log as logger } from '../utils';
 
 export const getAthleteHandler = async (
-  req: Request<{ uid: string }, {}, {}>,
+  req: Request<{ uid: string }, unknown, unknown>,
   res: Response
 ) => {
   const uid = req.params.uid;

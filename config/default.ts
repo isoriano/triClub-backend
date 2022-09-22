@@ -3,7 +3,7 @@ export default {
   db: {
     user: 'isoriano',
     password: 'aBB3Nvqa6rq:-eq',
-    uri: 'mongodb+srv://cluster0.89ia9.mongodb.net',
+    clusterName: 'cluster0.89ia9.mongodb.net',
   },
   accessTokenTtl: '15m',
   refreshTokenTtl: '1y',
@@ -61,4 +61,5 @@ export default {
     `,
   },
   saltWorkFactor: 10,
+  version: '1.0.0-beta'
 };
