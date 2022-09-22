@@ -1,11 +1,11 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 
-import { UserInput } from "../schemas/user.schema";
-import { CreateAthlete, CreateUser, GetUser } from "../services";
-import { log as logger } from "../utils";
+import { UserInput } from '../schemas/user.schema';
+import { CreateAthlete, CreateUser, GetUser } from '../services';
+import { log as logger } from '../utils';
 
 export const getUserHandler = async (
-  req: Request<{ uid: string }, {}, {}>,
+  req: Request<{ uid: string }, unknown, unknown>,
   res: Response
 ) => {
   const uid = req.params.uid;
@@ -20,7 +20,7 @@ export const getUserHandler = async (
 };
 
 export const createUserHandler = async (
-  req: Request<{}, {}, UserInput["body"]>,
+  req: Request<unknown, unknown, UserInput['body']>,
   res: Response
 ) => {
   try {
@@ -28,6 +28,7 @@ export const createUserHandler = async (
     await CreateAthlete({
       userId: user.id,
       sports: [],
+      dob: undefined,
     });
     return res.send(user);
   } catch (error: any) {

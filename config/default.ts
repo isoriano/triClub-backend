@@ -1,12 +1,12 @@
 export default {
   port: 1337,
   db: {
-    user: "isoriano",
-    password: "aBB3Nvqa6rq:-eq",
-    uri: "mongodb+srv://cluster0.89ia9.mongodb.net",
+    user: 'isoriano',
+    password: 'aBB3Nvqa6rq:-eq',
+    uri: 'mongodb+srv://cluster0.89ia9.mongodb.net',
   },
-  accessTokenTtl: "15m",
-  refreshTokenTtl: "1y",
+  accessTokenTtl: '15m',
+  refreshTokenTtl: '1y',
   jwt: {
     publicKey: `-----BEGIN RSA PUBLIC KEY-----
     MIIBigKCAYEAxpoIy6ofVpU+fXWZVe6gNf+o/OI4UUmUi/rlkrJxAZfHGS6CTRZa

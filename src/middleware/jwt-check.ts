@@ -1,6 +1,6 @@
-import * as jwt from "express-jwt";
-import * as jwksRsa from "jwks-rsa";
-import { auth0Config } from "../config/auth0.config";
+import * as jwt from 'express-jwt';
+import * as jwksRsa from 'jwks-rsa';
+import { auth0Config } from '../config/auth0.config';
 
 export const jwtCheck = jwt.expressjwt({
   secret: jwksRsa.expressJwtSecret({
@@ -11,5 +11,5 @@ export const jwtCheck = jwt.expressjwt({
   }),
   audience: auth0Config.auth0Audience,
   issuer: `https://${auth0Config.auth0Domain}/`,
-  algorithms: ["RS256"],
+  algorithms: ['RS256'],
 });

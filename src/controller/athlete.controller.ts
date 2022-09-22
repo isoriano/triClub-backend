@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
-import { GetUser, GetAthlete } from "../services";
-import { log as logger } from "../utils";
+import { Request, Response } from 'express';
+import { GetUser, GetAthlete } from '../services';
+import { log as logger } from '../utils';
 
 export const getAthleteHandler = async (
   req: Request<{ uid: string }, {}, {}>,
@@ -11,7 +11,7 @@ export const getAthleteHandler = async (
   try {
     const user = await GetUser(uid);
     if (!user) {
-      throw new Error("No user on the DB linked with the UID sent");
+      throw new Error('No user on the DB linked with the UID sent');
     }
     const athlete = await GetAthlete(user._id);
     return res.send({ user, athlete });

@@ -1,6 +1,6 @@
-import { DocumentDefinition } from "mongoose";
+import { DocumentDefinition } from 'mongoose';
 
-import { AthleteDocument, AthleteModel } from "../models";
+import { AthleteDocument, AthleteModel } from '../models';
 
 export const GetAthlete = async (userId: string) => {
   try {
@@ -11,7 +11,7 @@ export const GetAthlete = async (userId: string) => {
 };
 
 export const CreateAthlete = async (
-  input: DocumentDefinition<Omit<AthleteDocument, "createdAt" | "updatedAt">>
+  input: DocumentDefinition<Omit<AthleteDocument, 'createdAt' | 'updatedAt'>>
 ) => {
   try {
     return await AthleteModel.create(input);
