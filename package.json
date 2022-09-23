@@ -6,7 +6,8 @@
   "scripts": {
     "start:dev": "ts-node-dev --respawn --transpile-only src/app.ts",
     "start": "node ./dist/src/app.js",
-    "build": "tsc"
+    "build": "tsc",
+    "build:deploy": "npm install && tsc"
   },
   "keywords": [],
   "author": "",
