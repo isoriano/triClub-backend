@@ -11,10 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.listen(10000, '0.0.0.0', async () => {
-  logger.info(`API is running ar http://localhost:${port}`);
-
+app.listen(port, '0.0.0.0', async () => {
   await mongoDbConnect();
-
   routes(app);
 });

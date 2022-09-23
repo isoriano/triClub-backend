@@ -1,5 +1,5 @@
 export default {
-  port: 1337,
+  port: 10000,
   db: {
     user: 'isoriano',
     password: 'aBB3Nvqa6rq:-eq',
