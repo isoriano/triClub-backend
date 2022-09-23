@@ -1,0 +1,12 @@
+{
+  "server": {
+    "port": 1337,
+    "host": "localhost"
+  },
+  "db": {
+    "user": "isoriano",
+    "password": "aBB3Nvqa6rq:-eq",
+    "clusterName": "cluster0.89ia9.mongodb.net"
+  },
+  "version": "1.0.0-beta"
+}
