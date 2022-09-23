@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "ts-node-dev --respawn --transpile-only src/app.ts",
+    "start:dev": "ts-node-dev --respawn --transpile-only src/app.ts",
+    "start": "node ./dist/src/app.js",
     "build": "tsc"
   },
   "keywords": [],

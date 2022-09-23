@@ -9,6 +9,7 @@ import {
 import { jwtCheck } from './middleware/jwt-check';
 import { ValidateResource } from './middleware/validate-resource';
 import { UserSchema } from './schemas/user.schema';
+import { log as logger } from './utils';
 
 const version = config.get<number>('version');
 
@@ -19,4 +20,6 @@ export const routes = (app: Express) => {
   app.get('/api/users/:uid', jwtCheck, getUserHandler);
   app.post('/api/users', jwtCheck, ValidateResource(UserSchema), createUserHandler);
   app.put('/api/users', jwtCheck, ValidateResource(UserSchema), createUserHandler);
+
+  logger.info('Routes Loaded');
 };
