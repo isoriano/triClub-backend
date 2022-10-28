@@ -1,14 +1,17 @@
 import { Request, Response } from 'express';
 
 import { UserInput } from '../schemas/user.schema';
-import { CreateAthlete, CreateUser, GetUser } from '../services';
+import {
+  CreateAthlete,
+  CreateUser,
+  GetProfile,
+  GetUser,
+  UpdateUser,
+} from '../services';
 import { log as logger } from '../utils';
 
-export const getUserHandler = async (
-  req: Request<{ uid: string }, unknown, unknown>,
-  res: Response
-) => {
-  const uid = req.params.uid;
+export const GetUserHandler = async (req: Request, res: Response) => {
+  const uid = (req as any).auth.sub;
 
   try {
     const user = await GetUser(uid);
@@ -19,7 +22,19 @@ export const getUserHandler = async (
   }
 };
 
-export const createUserHandler = async (
+export const GetProfileHandler = async (req: Request, res: Response) => {
+  const uid = (req as any).auth.sub;
+
+  try {
+    const profile = await GetProfile(uid);
+    return res.send(profile);
+  } catch (error: any) {
+    logger.error(error);
+    return res.status(409).send(error.message);
+  }
+};
+
+export const CreateUserHandler = async (
   req: Request<unknown, unknown, UserInput['body']>,
   res: Response
 ) => {
@@ -27,9 +42,23 @@ export const createUserHandler = async (
     const user = await CreateUser(req.body);
     await CreateAthlete({
       userId: user.id,
-      sports: [],
       dob: undefined,
     });
+    return res.send(user);
+  } catch (error: any) {
+    logger.error(error);
+    return res.status(409).send(error.message);
+  }
+};
+
+export const UpdateAvatarHandler = async (
+  req: Request<unknown, unknown, { avatarId: string }>,
+  res: Response
+) => {
+  const uid = (req as any).auth.sub;
+
+  try {
+    const user = await UpdateUser(uid, { avatar_id: req.body.avatarId });
     return res.send(user);
   } catch (error: any) {
     logger.error(error);

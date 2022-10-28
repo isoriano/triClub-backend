@@ -4,6 +4,7 @@ export interface UserDocument extends Document {
   uid: string;
   name: string;
   email: string;
+  avatar_id?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -11,8 +12,9 @@ export interface UserDocument extends Document {
 const userSchema = new Schema<UserDocument>(
   {
     uid: { type: String, required: true, unique: true },
+    name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    name: { type: String, required: true }
+    avatar_id: { type: String }
   },
   {
     timestamps: true,

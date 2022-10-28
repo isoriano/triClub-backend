@@ -8,8 +8,10 @@ use('test');
 
 // The drop() command destroys all data from a collection.
 // Make sure you run it against the correct database and collection.
-db.users.drop();
-db.athletes.drop();
+// db.users.drop();
+// db.athletes.drop();
+db.files.files.drop();
+db.files.chunks.drop();
 
 // // Insert a few documents into the sales collection.
 // db.sales.insertMany([
@@ -25,6 +27,7 @@ db.athletes.drop();
 
 // Run a find command to view items sold on April 4th, 2014.
 // db.sales.find({ date: { $gte: new Date('2014-04-04'), $lt: new Date('2014-04-05') } });
+
 
 // Build an aggregation to view total sales for each product in 2014.
 // const aggregation = [

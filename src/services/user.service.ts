@@ -1,20 +1,48 @@
-import { DocumentDefinition } from "mongoose";
+import { DocumentDefinition } from 'mongoose';
 
-import { UserDocument, UserModel } from "../models";
+import { UserDocument, UserModel } from '../models';
+import { GetFileById } from './upload.service';
 
-export const GetUser = async(id: string) => {
+export const GetProfile = async (uid: string) => {
   try {
-    return await UserModel.findOne({uid: id});
+    const user = await GetUser(uid);
+    return { ...user, settingsOne: {} };
   } catch (error: any) {
     throw new Error(error);
   }
-}
+};
+
+export const GetUser = async (uid: string) => {
+  try {
+    const user = await UserModel.findOne({ uid });
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const avatar = await GetFileById(user.avatar_id as string);
+
+    return { user, avatar };
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
 
 export const CreateUser = async (
-  input: DocumentDefinition<Omit<UserDocument, "createdAt" | "updatedAt">>
+  input: DocumentDefinition<Omit<UserDocument, 'createdAt' | 'updatedAt'>>
 ) => {
   try {
-    return await UserModel.create(input);
+    return UserModel.create(input);
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
+export const UpdateUser = async (
+  uid: string,
+  update: Partial<UserDocument>
+) => {
+  try {
+    return UserModel.findOneAndUpdate({ uid }, update);
   } catch (error: any) {
     throw new Error(error);
   }

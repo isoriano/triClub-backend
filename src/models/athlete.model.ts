@@ -1,11 +1,8 @@
 import { Schema, model, Document } from 'mongoose';
 
-import { Sport } from './sport.model';
-
 export interface AthleteDocument extends Document {
   userId: string;
   dob?: Date;
-  sports: Sport[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -13,8 +10,7 @@ export interface AthleteDocument extends Document {
 const athleteSchema = new Schema<AthleteDocument>(
   {
     userId: { type: String, required: true, unique: true },
-    dob: { type: Date, required: false },
-    sports: { type: Array<Sport>(), default: [] },
+    dob: { type: Date }
   },
   {
     timestamps: true,
