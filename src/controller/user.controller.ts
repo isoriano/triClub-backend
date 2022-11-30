@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { UserInput } from '../schemas/user.schema';
+import { UpdateUserInput, UserInput } from '../schemas/user.schema';
 import {
   CreateAthlete,
   CreateUser,
@@ -41,8 +41,7 @@ export const CreateUserHandler = async (
   try {
     const user = await CreateUser(req.body);
     await CreateAthlete({
-      userId: user.id,
-      dob: undefined,
+      userId: user.id
     });
     return res.send(user);
   } catch (error: any) {
@@ -51,13 +50,26 @@ export const CreateUserHandler = async (
   }
 };
 
-export const UpdateAvatarHandler = async (
-  req: Request<unknown, unknown, { avatarId: string }>,
+export const UpdateUserHandler = async (
+  req: Request<{ uid: string }, unknown, UpdateUserInput['body']>,
   res: Response
 ) => {
-  const uid = (req as any).auth.sub;
-
   try {
+    const uid = req.params.uid;
+    const user = await UpdateUser(uid, req.body);
+    return res.send(user);
+  } catch (error: any) {
+    logger.error(error);
+    return res.status(409).send(error.message);
+  }
+};
+
+export const UpdateAvatarHandler = async (
+  req: Request<{ uid: string }, unknown, { avatarId: string }>,
+  res: Response
+) => {
+  try {
+    const uid = req.params.uid;
     const user = await UpdateUser(uid, { avatar_id: req.body.avatarId });
     return res.send(user);
   } catch (error: any) {

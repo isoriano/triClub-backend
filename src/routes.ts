@@ -7,6 +7,7 @@ import {
   UpdateAvatarHandler,
   GetProfileHandler,
   CreateUserHandler,
+  UpdateUserHandler,
 } from './controller';
 import { jwtCheck } from './middleware/jwt-check';
 import { ValidateResource } from './middleware/validate-resource';
@@ -23,7 +24,8 @@ export const routes = (app: Express) => {
   app.post('/api/users', jwtCheck, ValidateResource(UserSchema), CreateUserHandler);
 
   app.get('/api/user/profile', jwtCheck, GetProfileHandler);
-  app.put('/api/user/avatar', jwtCheck, UpdateAvatarHandler);
+  app.put('/api/user/:uid/avatar', jwtCheck, UpdateAvatarHandler);
+  app.put('/api/user/:uid', jwtCheck, UpdateUserHandler);
 
   app.get('/api/file/:uid', jwtCheck, uploadController.getFileHandler);
   app.post('/api/upload', jwtCheck, uploadController.storeFile().single('file'), (req, res) => {

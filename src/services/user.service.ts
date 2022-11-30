@@ -19,7 +19,10 @@ export const GetUser = async (uid: string) => {
       throw new Error('User not found');
     }
 
-    const avatar = await GetFileById(user.avatar_id as string);
+    let avatar = undefined;
+    if (user.avatar_id) {
+      avatar = await GetFileById(user.avatar_id as string);
+    }
 
     return { user, avatar };
   } catch (error: any) {

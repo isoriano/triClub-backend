@@ -2,7 +2,6 @@ import { Schema, model, Document } from 'mongoose';
 
 export interface AthleteDocument extends Document {
   userId: string;
-  dob?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -10,7 +9,6 @@ export interface AthleteDocument extends Document {
 const athleteSchema = new Schema<AthleteDocument>(
   {
     userId: { type: String, required: true, unique: true },
-    dob: { type: Date }
   },
   {
     timestamps: true,
