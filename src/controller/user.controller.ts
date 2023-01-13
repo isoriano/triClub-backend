@@ -4,6 +4,7 @@ import { UpdateUserInput, UserInput } from '../schemas/user.schema';
 import {
   CreateAthlete,
   CreateUser,
+  GetAvatarImage,
   GetProfile,
   GetUser,
   UpdateUser,
@@ -14,8 +15,8 @@ export const GetUserHandler = async (req: Request, res: Response) => {
   const uid = (req as any).auth.sub;
 
   try {
-    const user = await GetUser(uid);
-    return res.send(user);
+    const userDetails = await GetUser(uid);
+    return res.send(userDetails);
   } catch (error: any) {
     logger.error(error);
     return res.status(409).send(error.message);
@@ -40,9 +41,9 @@ export const CreateUserHandler = async (
 ) => {
   try {
     const user = await CreateUser(req.body);
-    await CreateAthlete({
-      userId: user.id
-    });
+    // await CreateAthlete({
+    //   userId: user.id,
+    // });
     return res.send(user);
   } catch (error: any) {
     logger.error(error);
@@ -51,12 +52,15 @@ export const CreateUserHandler = async (
 };
 
 export const UpdateUserHandler = async (
-  req: Request<{ uid: string }, unknown, UpdateUserInput['body']>,
+  req: Request<unknown, unknown, UpdateUserInput['body']>,
   res: Response
 ) => {
   try {
-    const uid = req.params.uid;
-    const user = await UpdateUser(uid, req.body);
+    return res.status(409).send('Mocked Error');
+
+    const uid = (req as any).auth.sub;
+    await UpdateUser(uid, req.body);
+    const user = await GetUser(uid);
     return res.send(user);
   } catch (error: any) {
     logger.error(error);
@@ -65,13 +69,14 @@ export const UpdateUserHandler = async (
 };
 
 export const UpdateAvatarHandler = async (
-  req: Request<{ uid: string }, unknown, { avatarId: string }>,
+  req: Request<unknown, unknown, { avatarId: string }>,
   res: Response
 ) => {
   try {
-    const uid = req.params.uid;
-    const user = await UpdateUser(uid, { avatar_id: req.body.avatarId });
-    return res.send(user);
+    const uid = (req as any).auth.sub;
+    await UpdateUser(uid, { avatar_id: req.body.avatarId });
+    const avatar = await GetAvatarImage(req.body.avatarId);
+    return res.send(avatar);
   } catch (error: any) {
     logger.error(error);
     return res.status(409).send(error.message);

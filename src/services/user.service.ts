@@ -21,7 +21,7 @@ export const GetUser = async (uid: string) => {
 
     let avatar = undefined;
     if (user.avatar_id) {
-      avatar = await GetFileById(user.avatar_id as string);
+      avatar = await GetAvatarImage(user.avatar_id as string);
     }
 
     return { user, avatar };
@@ -30,11 +30,15 @@ export const GetUser = async (uid: string) => {
   }
 };
 
+export const GetAvatarImage = async (avatarId: string) =>
+  await GetFileById(avatarId);
+
 export const CreateUser = async (
-  input: DocumentDefinition<Omit<UserDocument, 'createdAt' | 'updatedAt'>>
+  newUser: DocumentDefinition<Omit<UserDocument, 'createdAt' | 'updatedAt'>>
 ) => {
   try {
-    return UserModel.create(input);
+    const userAdded = UserModel.create(newUser);
+    return { user: userAdded };
   } catch (error: any) {
     throw new Error(error);
   }
