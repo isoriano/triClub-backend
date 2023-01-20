@@ -1,5 +1,4 @@
 import { Schema, model, Document } from 'mongoose';
-import { File } from './file.model';
 
 export interface UserDocument extends Document {
   uid: string;

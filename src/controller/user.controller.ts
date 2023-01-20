@@ -1,21 +1,14 @@
 import { Request, Response } from 'express';
 
 import { UpdateUserInput, UserInput } from '../schemas/user.schema';
-import {
-  CreateAthlete,
-  CreateUser,
-  GetAvatarImage,
-  GetProfile,
-  GetUser,
-  UpdateUser,
-} from '../services';
+import * as service from '../services';
 import { log as logger } from '../utils';
 
 export const GetUserHandler = async (req: Request, res: Response) => {
   const uid = (req as any).auth.sub;
 
   try {
-    const userDetails = await GetUser(uid);
+    const userDetails = await service.GetUser(uid);
     return res.send(userDetails);
   } catch (error: any) {
     logger.error(error);
@@ -27,7 +20,7 @@ export const GetProfileHandler = async (req: Request, res: Response) => {
   const uid = (req as any).auth.sub;
 
   try {
-    const profile = await GetProfile(uid);
+    const profile = await service.GetProfile(uid);
     return res.send(profile);
   } catch (error: any) {
     logger.error(error);
@@ -40,7 +33,7 @@ export const CreateUserHandler = async (
   res: Response
 ) => {
   try {
-    const user = await CreateUser(req.body);
+    const user = await service.CreateUser(req.body);
     // await CreateAthlete({
     //   userId: user.id,
     // });
@@ -56,12 +49,25 @@ export const UpdateUserHandler = async (
   res: Response
 ) => {
   try {
-    return res.status(409).send('Mocked Error');
-
     const uid = (req as any).auth.sub;
-    await UpdateUser(uid, req.body);
-    const user = await GetUser(uid);
+    await service.UpdateUser(uid, req.body);
+    const user = await service.GetUser(uid);
     return res.send(user);
+  } catch (error: any) {
+    logger.error(error);
+    return res.status(409).send(error.message);
+  }
+};
+
+export const RequestPasswordChangeHandler = async (
+  req: Request<unknown, unknown, unknown>,
+  res: Response
+) => {
+  try {
+    const uid = (req as any).auth.sub;
+    const aux = await service.auth.RequestPasswordChange(uid);
+
+    return res.send(aux);
   } catch (error: any) {
     logger.error(error);
     return res.status(409).send(error.message);
@@ -74,8 +80,8 @@ export const UpdateAvatarHandler = async (
 ) => {
   try {
     const uid = (req as any).auth.sub;
-    await UpdateUser(uid, { avatar_id: req.body.avatarId });
-    const avatar = await GetAvatarImage(req.body.avatarId);
+    await service.UpdateUser(uid, { avatar_id: req.body.avatarId });
+    const avatar = await service.GetAvatarImage(req.body.avatarId);
     return res.send(avatar);
   } catch (error: any) {
     logger.error(error);

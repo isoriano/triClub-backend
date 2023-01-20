@@ -9,6 +9,7 @@ import {
   CreateUserHandler,
   UpdateUserHandler,
   GetUserHandler,
+  RequestPasswordChangeHandler
 } from './controller';
 import { jwtCheck } from './middleware/jwt-check';
 import { ValidateResource } from './middleware/validate-resource';
@@ -25,6 +26,7 @@ export const routes = (app: Express) => {
   app.post('/api/users', jwtCheck, ValidateResource(UserSchema), CreateUserHandler);
 
   app.get('/api/user', jwtCheck, GetUserHandler);
+  app.get('/api/user/change-password', jwtCheck,  RequestPasswordChangeHandler);
   app.get('/api/user/profile', jwtCheck, GetProfileHandler);
   app.put('/api/user/avatar', jwtCheck, UpdateAvatarHandler);
   app.put('/api/user', jwtCheck, UpdateUserHandler);
