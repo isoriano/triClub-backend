@@ -14,7 +14,6 @@ export const RequestPasswordChange = async (uid: string) => {
     domain: auth0Config.auth0Domain,
     clientId: auth0Config.apiMngmtClientId,
     clientSecret: auth0Config.apiMngmtClientSecret,
-    scope: 'read:users update:users create:user_tickets',
   });
 
   return await auth0.createPasswordChangeTicket({
@@ -39,4 +38,15 @@ export const RequestPasswordChange = async (uid: string) => {
   //   result_url: 'https://www.google.com',
   //   user_id: uid,
   // });
+};
+
+export const DeleteUser = async (uid: string) => {
+  const auth0 = new ManagementClient({
+    domain: auth0Config.auth0Domain,
+    clientId: auth0Config.apiMngmtClientId,
+    clientSecret: auth0Config.apiMngmtClientSecret,
+    scope: 'read:users delete:users',
+  });
+
+  return await auth0.deleteUser({ id: uid });
 };

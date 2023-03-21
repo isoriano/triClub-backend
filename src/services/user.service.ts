@@ -54,3 +54,13 @@ export const UpdateUser = async (
     throw new Error(error);
   }
 };
+
+export const DeleteUser = async (uid: string) => {
+  try {
+    // TODO: Delete Avatar?
+    // TODO: Delete Athelete information once done
+    return await UserModel.deleteOne({ uid });
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};

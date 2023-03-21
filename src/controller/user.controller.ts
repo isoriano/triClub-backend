@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
 
 import { UpdateUserInput, UserInput } from '../schemas/user.schema';
-import * as service from '../services';
+import { auth, userService } from '../services';
 import { log as logger } from '../utils';
 
 export const GetUserHandler = async (req: Request, res: Response) => {
   const uid = (req as any).auth.sub;
 
   try {
-    const userDetails = await service.GetUser(uid);
+    const userDetails = await userService.GetUser(uid);
     return res.send(userDetails);
   } catch (error: any) {
     logger.error(error);
@@ -20,7 +20,7 @@ export const GetProfileHandler = async (req: Request, res: Response) => {
   const uid = (req as any).auth.sub;
 
   try {
-    const profile = await service.GetProfile(uid);
+    const profile = await userService.GetProfile(uid);
     return res.send(profile);
   } catch (error: any) {
     logger.error(error);
@@ -33,7 +33,7 @@ export const CreateUserHandler = async (
   res: Response
 ) => {
   try {
-    const user = await service.CreateUser(req.body);
+    const user = await userService.CreateUser(req.body);
     // await CreateAthlete({
     //   userId: user.id,
     // });
@@ -50,8 +50,8 @@ export const UpdateUserHandler = async (
 ) => {
   try {
     const uid = (req as any).auth.sub;
-    await service.UpdateUser(uid, req.body);
-    const user = await service.GetUser(uid);
+    await userService.UpdateUser(uid, req.body);
+    const user = await userService.GetUser(uid);
     return res.send(user);
   } catch (error: any) {
     logger.error(error);
@@ -65,7 +65,7 @@ export const RequestPasswordChangeHandler = async (
 ) => {
   try {
     const uid = (req as any).auth.sub;
-    const aux = await service.auth.RequestPasswordChange(uid);
+    const aux = await auth.RequestPasswordChange(uid);
 
     return res.send(aux);
   } catch (error: any) {
@@ -80,9 +80,23 @@ export const UpdateAvatarHandler = async (
 ) => {
   try {
     const uid = (req as any).auth.sub;
-    await service.UpdateUser(uid, { avatar_id: req.body.avatarId });
-    const avatar = await service.GetAvatarImage(req.body.avatarId);
+    await userService.UpdateUser(uid, { avatar_id: req.body.avatarId });
+    const avatar = await userService.GetAvatarImage(req.body.avatarId);
     return res.send(avatar);
+  } catch (error: any) {
+    logger.error(error);
+    return res.status(409).send(error.message);
+  }
+};
+
+export const DeleteUser = async (
+  req: Request<unknown, unknown, { avatarId: string }>,
+  res: Response
+) => {
+  try {
+    const uid = (req as any).auth.sub;
+    await auth.DeleteUser(uid);
+    await userService.DeleteUser(uid);
   } catch (error: any) {
     logger.error(error);
     return res.status(409).send(error.message);
