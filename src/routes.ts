@@ -2,26 +2,28 @@ import config from 'config';
 import { Express } from 'express';
 
 import {
-  getAthleteHandler,
-  uploadController,
   UpdateAvatarHandler,
   GetProfileHandler,
   CreateUserHandler,
   UpdateUserHandler,
   GetUserHandler,
-  RequestPasswordChangeHandler
+  RequestPasswordChangeHandler,
+  teamController,
+  uploadController,
 } from './controller';
 import { jwtCheck } from './middleware/jwt-check';
 import { ValidateResource } from './middleware/validate-resource';
 import { UserSchema } from './schemas/user.schema';
 import { log as logger } from './utils';
+import { NewTeamSchema } from './schemas/team.schema';
 
 const version = config.get<number>('version');
 
 export const routes = (app: Express) => {
   app.get('/api/sambori', (req, res) => res.send(`Sambori! v.${version}`));
 
-  app.get('/api/athlete/:uid', jwtCheck, getAthleteHandler);
+  app.get('/api/teams/:uid', jwtCheck, teamController.GetTeamHandler);
+  app.post('/api/teams', jwtCheck, ValidateResource(NewTeamSchema), teamController.CreateTeamHandler);
 
   app.post('/api/users', jwtCheck, ValidateResource(UserSchema), CreateUserHandler);
 

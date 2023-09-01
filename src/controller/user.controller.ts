@@ -34,7 +34,7 @@ export const CreateUserHandler = async (
 ) => {
   try {
     const user = await userService.CreateUser(req.body);
-    // await CreateAthlete({
+    // await CreateTeams({
     //   userId: user.id,
     // });
     return res.send(user);
